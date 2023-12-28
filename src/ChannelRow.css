@@ -1,0 +1,54 @@
+.channelRow{
+    display: flex;
+    align-items: center;
+    width: 70%;
+    font-family: Helvetica;
+
+}
+
+.channelRow_text{
+    display: flex;
+    flex-direction: column;
+}
+
+.channelRow_text > p{
+    color: #606060;
+    font-size: small !important;
+
+}
+.channelRow_logo{
+    height: 120px !important;
+    width: 120px !important;
+    margin: 10px 60px;
+    
+}
+.vrIcon{
+    background-color: #606060;
+    color: white;
+    border-radius: 50px;
+}
+.channelRow_text > h4{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.channelRow_subscribeButton{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+    width: 80px;
+    height: 40px;
+    color: white;
+    background-color: black;
+    border-radius: 50px;
+    font-weight: 400;
+    margin-top: 5px;
+}
+.channelRow_subscribeButton:hover{
+    color: black;
+    background-color: white;
+    cursor: pointer;
+
+}
+
+
