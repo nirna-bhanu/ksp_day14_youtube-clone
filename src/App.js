@@ -1,54 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import SearchPage from './SearchPage';
+
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
-import RecommendedVideos from './RecommendedVideos';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-
 function App() {
-  const [videos, setVideos] = useState([]);
+
+  const [timerDays, setTimerDays] = useState('00');
+  const [timerHours, setTimerHours] = useState('00');
+  const [timerMinutes, setTimerMinutes] = useState('00');
+  const [timerSeconds, setTimerSeconds] = useState('00');
+
+  let intervel = useRef();
+
+
+
+  const startTimer = () => {
+    const countdownDate = new Date('Feb 08 2024 00:00:00').getTime();
+
+    intervel.current = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      if (distance <= 0) {
+        clearInterval(intervel.current);
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setTimerDays(days < 10 ? `0${days}` : days.toString());
+        setTimerHours(hours < 10 ? `0${hours}` : hours.toString());
+        setTimerMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
+        setTimerSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
+      }
+    }, 1000);
+  };
+
+
+
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/videos')
-      .then((response) => setVideos(response.data))
-      .catch((error) => console.error(error));
-  }, []);
+    startTimer();
+    return () => {
+      clearInterval(intervel.current);
+
+    }
+  })
+
 
   return (
-    <div className='app'>
-      <Router>
-        <Header />
-        <Routes>
+    <section className='time-container'>
+      <section className="timer">
+        <div>
+          <span className='mdi mdi-calendar-clock timer-icon'>
 
-<Route path='/search/:searchTerm' 
-element={
-  <>
-    <div className='app_page'>
-      <Sidebar/>
-      <SearchPage/>
-    </div>
-  </>
-} />
+          </span>
+          <h2>Countdown Timer</h2>
+          <p>Countdown to a really special date. One you could or would never imagine </p>
+        </div>
+        <div>
+          <section>
+            <p>{timerDays}</p>
+            <p><small>Days</small></p>
+          </section>
 
-          <Route
-            path='/'
-            element={
-              <>
-                <div className='app_page'>
-                  <Sidebar/>
-                  <RecommendedVideos />
-                </div>
-              </>
-            }
-          />
+          <span>:</span>
 
-        </Routes>
-      </Router>
-    </div>
+          <section>
+            <p>{timerHours}</p>
+            <p><small>Hours</small></p>
+          </section>
+
+          <span>:</span>
+
+          <section>
+            <p>{timerMinutes}</p>
+            <p><small>Minutes</small></p>
+          </section>
+
+          <span>:</span>
+
+          <section>
+            <p>{timerSeconds}</p>
+            <p><small>Seconds</small></p>
+          </section>
+        </div>
+
+      </section>
+
+
+
+    </section>
+
+
   );
 }
 
